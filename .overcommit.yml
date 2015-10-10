@@ -1,0 +1,10 @@
+---
+PreCommit:
+  RuboCop:
+    enabled: true
+  Flog:
+    enabled: true
+  Reek:
+    enabled: true
+  BerksfileCheck:
+    enabled: true
