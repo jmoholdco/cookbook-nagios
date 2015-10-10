@@ -7,7 +7,6 @@
 
 cache_path = Chef::Config['file_cache_path']
 version = node['nagios']['version']
-build_user = node['admin_user'] || 'root'
 
 node['nagios']['build_dependencies'].each do |dep|
   yum_package dep do
@@ -35,7 +34,7 @@ end
 
 bash 'config_core' do
   action :nothing
-  user build_user
+  user 'root'
   cwd "#{cache_path}/nagios-#{version}"
   code <<-EOSH
     ./configure --with-command-group=nagcmd && make all
@@ -45,11 +44,10 @@ end
 
 bash 'install_core' do
   action :nothing
-  user build_user
+  user 'root'
   cwd "#{cache_path}/nagios-#{version}"
   code <<-EOSH
-    (sudo make install && sudo make install-commandmode &&
-     sudo make install-init && sudo make install-config &&
-     sudo make install-webconf)
+    (make install && make install-commandmode && make install-init &&
+     make install-config && make install-webconf)
   EOSH
 end

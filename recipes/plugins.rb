@@ -7,7 +7,6 @@
 cache_path = Chef::Config['file_cache_path']
 version = node['nagios']['plugins']['version']
 nag_admin = node['nagios']['admin_user']
-build_user = node['admin_user'] || 'root'
 
 remote_file "#{cache_path}/nagios-plugins-#{version}.tar.gz" do
   source "http://nagios-plugins.org/download/nagios-plugins-#{version}.tar.gz"
@@ -30,10 +29,10 @@ end
 bash 'install' do
   action :nothing
   cwd "#{cache_path}/nagios-plugins-#{version}"
-  user build_user
+  user 'root'
   code <<-EOSH
     ./configure --with-nagios-user=#{nag_admin['username']} \
     --with-nagios-group=#{nag_admin['primary_group']} --with-openssl &&
-    make && sudo make install
+    make && make install
   EOSH
 end

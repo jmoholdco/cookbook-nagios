@@ -8,7 +8,6 @@
 cache_path = Chef::Config['file_cache_path']
 version = node['nagios']['nrpe']['version']
 nag_admin = node['nagios']['admin_user']
-build_user = node['admin_user'] || 'root'
 
 # rubocop:disable Metrics/LineLength
 bash 'download_nrpe' do
@@ -34,12 +33,12 @@ end
 bash 'install_nrpe' do
   action :nothing
   cwd "#{cache_path}/nrpe-#{version}"
-  user build_user
+  user 'root'
   code <<-EOSH
     ./configure --enable-command-args --with-nagios-user=#{nag_admin['username']} \
     --with-nagios-group=#{nag_admin['primary_group']} --with-ssl=/usr/bin/openssl \
-    --with-ssl-lib=/usr/lib/x86_64-linux-gnu && make all && sudo make install &&
-    sudo make install-xinetd && sudo make install-daemon-config
+    --with-ssl-lib=/usr/lib/x86_64-linux-gnu && make all && make install &&
+    make install-xinetd && make install-daemon-config
   EOSH
   notifies :create, 'template[nrpe]', :immediately
 end
