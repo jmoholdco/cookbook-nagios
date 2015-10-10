@@ -24,3 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'nagios::lamp'
+include_recipe 'nagios::user'
+include_recipe 'nagios::build'
+include_recipe 'nagios::plugins'
+include_recipe 'nagios::nrpe'
+include_recipe 'nagios::configuration'
