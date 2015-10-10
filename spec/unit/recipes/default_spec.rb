@@ -24,15 +24,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-
 require 'spec_helper'
 
 RSpec.describe 'nagios::default' do
   context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
+    let(:chef_run) do
+      ChefSpec::ServerRunner.new do |_, server|
+        server.create_data_bag(
+          'nagios',
+          'passwords' => parse_data_bag('nagios/passwords.json')
+        )
+      end.converge(described_recipe)
+    end
 
     it 'converges successfully' do
       expect { chef_run }.to_not raise_error
+    end
+
+    describe 'included recipes' do
+      subject { chef_run }
+      it { is_expected.to include_recipe 'nagios::lamp' }
+      it { is_expected.to include_recipe 'nagios::lamp' }
+      it { is_expected.to include_recipe 'nagios::user' }
+      it { is_expected.to include_recipe 'nagios::build' }
     end
   end
 end
