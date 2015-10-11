@@ -4,7 +4,7 @@ maintainer_email 'j.morgan.lieberthal@gmail.com'
 license 'mit'
 description 'Installs/Configures nagios'
 long_description 'Installs/Configures nagios'
-version '0.1.2'
+version '0.1.3'
 
 depends 'selinux', '~> 0.9'
 depends 'chef-vault', '~> 1.3'

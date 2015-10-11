@@ -17,6 +17,10 @@ directory '/usr/local/nagios/etc/servers' do
   recursive true
 end
 
+directory '/usr/local/nagios/etc/objects' do
+  recursive true
+end
+
 template '/usr/local/nagios/etc/objects/contacts.cfg' do
   source 'contacts.cfg.erb'
   mode 0644
